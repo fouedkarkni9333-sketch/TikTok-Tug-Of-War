@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>معركة شد الحبل - TikTok Live</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: transparent; /* شفاف لدمجه فوق البث المباشر، أو أضف خلفية داكنة للتجربة */
+            background-color: #0f172a;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .game-box {
+            width: 92%;
+            max-width: 600px;
+            background: rgba(15, 23, 42, 0.85);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 25px 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            text-align: center;
+            position: relative;
+        }
+
+        .header-title {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #ff4b2b, #ff416c, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .teams-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .team-1 { color: #ff4b2b; text-shadow: 0 0 10px rgba(255, 75, 43, 0.5); }
+        .team-2 { color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.5); }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .badge-1 { background: rgba(255, 75, 43, 0.2); border: 1px solid #ff4b2b; }
+        .badge-2 { background: rgba(56, 189, 248, 0.2); border: 1px solid #38bdf8; }
+
+        /* مسار السباق / الحبل */
+        .track-container {
+            position: relative;
+            width: 100%;
+            height: 45px;
+            background: linear-gradient(90deg, rgba(255,75,43,0.3) 0%, rgba(30,41,59,1) 50%, rgba(56,189,248,0.3) 100%);
+            border-radius: 25px;
+            border: 2px solid #334155;
+            margin: 25px 0;
+            overflow: hidden;
+        }
+
+        /* خط المنتصف */
+        .center-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #facc15;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        /* المؤشر المتحرك */
+        .marker {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 32px;
+            z-index: 2;
+            transition: left 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+            filter: drop-shadow(0 0 8px rgba(255,255,255,0.8));
+        }
+
+        .last-action {
+            font-size: 14px;
+            color: #cbd5e1;
+            min-height: 22px;
+            margin-bottom: 10px;
+        }
+
+        .gift-promo {
+            background: rgba(250, 204, 21, 0.15);
+            border: 1px dashed #facc15;
+            color: #fde047;
+            padding: 8px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        /* شاشة الفوز */
+        .winner-overlay {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.95);
+            border-radius: 18px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+        .winner-overlay h2 { font-size: 28px; margin-bottom: 10px; }
+        .reset-btn {
+            background: #22c55e;
+            color: #000;
+            border: none;
+            padding: 10px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        /* أزرار الاختبار اليدوي (للتجربة على GitHub) */
+        .test-controls {
+            margin-top: 25px;
+            display: flex;
+            gap: 10px;
+            opacity: 0.7;
+        }
+        .test-controls:hover { opacity: 1; }
+        .test-btn {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-box">
+        <div class="header-title">⚔️ تحدي الشد المباشر ⚔️</div>
+
+        <div class="teams-header">
+            <div class="team-1">
+                <div>🔴 الفريق الأحمر</div>
+                <div class="badge badge-1">اكتب: 1</div>
+            </div>
+            <div class="team-2">
+                <div>🔵 الفريق الأزرق</div>
+                <div class="badge badge-2">اكتب: 2</div>
+            </div>
+        </div>
+
+        <div class="track-container">
+            <div class="center-line"></div>
+            <div class="marker" id="marker" style="left: 50%;">🔥</div>
+        </div>
+
+        <div class="last-action" id="statusText">في انتظار تفاعل المشاهدين...</div>
+
+        <div class="gift-promo">
+            🌹 الوردة = +10 خطوات فورية لفريقك!
+        </div>
+
+        <!-- شاشة إعلان الفائز -->
+        <div class="winner-overlay" id="winnerScreen">
+            <h2 id="winnerTitle">🏆 فاز الفريق الأحمر!</h2>
+            <p id="winnerSub">سيتم بدء جولة جديدة تلقائياً...</p>
+            <button class="reset-btn" onclick="resetGame()">جولة جديدة الآن</button>
+        </div>
+    </div>
+
+    <!-- أزرار للتجربة اليدوية قبل الربط بالبث -->
+    <div class="test-controls">
+        <button class="test-btn" style="background:#ef4444;" onclick="pull('1', 2, 'تجربة_1')">سحب أحمر (+1)</button>
+        <button class="test-btn" style="background:#3b82f6;" onclick="pull('2', 2, 'تجربة_2')">سحب أزرق (+2)</button>
+        <button class="test-btn" style="background:#eab308; color:#000;" onclick="pull('1', 12, 'هدية_وردة')">هدية للأحمر 🌹</button>
+    </div>
+
+    <script>
+        let position = 50; // 0 = فوز الأحمر، 100 = فوز الأزرق
+        let gameActive = true;
+
+        const marker = document.getElementById('marker');
+        const statusText = document.getElementById('statusText');
+        const winnerScreen = document.getElementById('winnerScreen');
+        const winnerTitle = document.getElementById('winnerTitle');
+
+        // دالة تحريك المؤشر
+        function pull(team, power, username = "مشاهد") {
+            if (!gameActive) return;
+
+            if (team === '1') {
+                position -= power;
+                statusText.innerHTML = `<span style="color:#ff4b2b">${username}</span> سحب لصالح الأحمر!`;
+            } else if (team === '2') {
+                position += power;
+                statusText.innerHTML = `<span style="color:#38bdf8">${username}</span> سحب لصالح الأزرق!`;
+            }
+
+            // التحقق من الفوز
+            if (position <= 5) {
+                position = 5;
+                endGame("🔴 فاز الفريق الأحمر!");
+            } else if (position >= 95) {
+                position = 95;
+                endGame("🔵 فاز الفريق الأزرق!");
+            }
+
+            marker.style.left = position + '%';
+        }
+
+        function endGame(title) {
+            gameActive = false;
+            winnerTitle.innerText = title;
+            winnerScreen.style.display = 'flex';
+            // إعادة تشغيل تلقائية بعد 5 ثوانٍ لاستمرار البث بدون توقف
+            setTimeout(resetGame, 5000);
+        }
+
+        function resetGame() {
+            position = 50;
+            gameActive = true;
+            marker.style.left = '50%';
+            winnerScreen.style.display = 'none';
+            statusText.innerText = "بدأت جولة جديدة! اكتب 1 أو 2";
+        }
+
+        // الاتصال التلقائي بسيرفر البث المحلي (WebSocket) عند تشغيل البوت
+        function connectWebSocket() {
+            try {
+                const ws = new WebSocket('ws://localhost:8765');
+                ws.onmessage = function(event) {
+                    const data = JSON.parse(event.data);
+                    pull(data.team, data.power, data.user);
+                };
+                ws.onclose = function() {
+                    // محاولة إعادة الاتصال كل 3 ثوانٍ في حال لم يكن السكربت يعمل بعد
+                    setTimeout(connectWebSocket, 3000);
+                };
+            } catch (e) {
+                console.log("وضع العرض المستقل نشط");
+            }
+        }
+
+        connectWebSocket();
+    </script>
+</body>
+</html>
