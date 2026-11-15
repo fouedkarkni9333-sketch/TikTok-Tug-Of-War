@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>معركة الشد الحارق - TikTok Live</title>
+    <title>معركة شد السيارات - TikTok Live</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            background: #090d16;
+            background: #070b14;
             color: #ffffff;
-            font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -18,274 +18,376 @@
             overflow: hidden;
         }
 
-        /* تأثير اهتزاز الشاشة عند الحماسة */
-        @keyframes shake {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            20% { transform: translate(-5px, 5px) rotate(-1deg); }
-            40% { transform: translate(5px, -5px) rotate(1deg); }
-            60% { transform: translate(-3px, -3px) rotate(0deg); }
-            80% { transform: translate(3px, 3px) rotate(1deg); }
-            100% { transform: translate(0, 0) rotate(0deg); }
+        /* اهتزاز عنيف عند الهدايا */
+        @keyframes heavyShake {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            20% { transform: translate(-8px, 6px) rotate(-1.5deg); }
+            40% { transform: translate(8px, -6px) rotate(1.5deg); }
+            60% { transform: translate(-6px, -4px) rotate(-1deg); }
+            80% { transform: translate(6px, 4px) rotate(1deg); }
         }
-        .shake-effect { animation: shake 0.3s ease-in-out; }
+        .shake { animation: heavyShake 0.35s ease-in-out; }
 
-        .game-container {
+        /* اهتزاز المحركات المستمر */
+        @keyframes engineVibrate {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-2px); }
+        }
+
+        .arena-card {
             width: 95%;
-            max-width: 650px;
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border: 3px solid #334155;
-            border-radius: 25px;
-            padding: 25px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(255,255,255,0.05);
+            max-width: 680px;
+            background: linear-gradient(180deg, #111827 0%, #030712 100%);
+            border: 3px solid #374151;
+            border-radius: 24px;
+            padding: 25px 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.9), 0 0 30px rgba(239, 68, 68, 0.15);
             text-align: center;
             position: relative;
         }
 
-        .battle-title {
-            font-size: 26px;
+        .title-banner {
+            font-size: 24px;
             font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-            background: linear-gradient(90deg, #ff3366, #ff9900, #33ccff);
+            margin-bottom: 18px;
+            background: linear-gradient(90deg, #ef4444, #f59e0b, #3b82f6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 20px rgba(255,51,102,0.4);
         }
 
-        .teams-info {
+        .scoreboard {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            font-size: 20px;
-            font-weight: bold;
+            margin-bottom: 15px;
+            padding: 0 10px;
         }
 
-        .team-red-box { color: #ff3366; text-shadow: 0 0 12px rgba(255, 51, 102, 0.6); }
-        .team-blue-box { color: #33ccff; text-shadow: 0 0 12px rgba(51, 204, 255, 0.6); }
+        .team-box {
+            padding: 8px 16px;
+            border-radius: 14px;
+            font-weight: bold;
+            font-size: 17px;
+        }
+        .red-team {
+            background: rgba(239, 68, 68, 0.15);
+            border: 2px solid #ef4444;
+            color: #fca5a5;
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+        }
+        .blue-team {
+            background: rgba(59, 130, 246, 0.15);
+            border: 2px solid #3b82f6;
+            color: #93c5fd;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+        }
 
-        /* مسار شد الحبل الاحترافي */
-        .rope-arena {
+        /* مضمار الإسفلت */
+        .asphalt-road {
             position: relative;
             width: 100%;
-            height: 70px;
-            background: #020617;
-            border-radius: 35px;
-            border: 3px solid #475569;
-            margin: 30px 0;
+            height: 110px;
+            background: #1f2937;
+            border-top: 4px dashed #ef4444;
+            border-bottom: 4px dashed #3b82f6;
+            border-radius: 16px;
+            margin: 25px 0;
             overflow: hidden;
-            box-shadow: inset 0 10px 20px rgba(0,0,0,0.9);
+            box-shadow: inset 0 0 25px #000000;
+            display: flex;
+            align-items: center;
         }
 
-        .center-marker {
+        /* خطوط الطريق البيضاء */
+        .road-stripes {
+            position: absolute;
+            width: 100%;
+            height: 4px;
+            background: repeating-linear-gradient(90deg, #4b5563 0, #4b5563 25px, transparent 25px, transparent 50px);
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.4;
+        }
+
+        /* خط المنتصف الفاصل */
+        .finish-center {
             position: absolute;
             left: 50%;
             top: 0;
             bottom: 0;
             width: 4px;
-            background: #fbbf24;
+            background: #facc15;
+            box-shadow: 0 0 15px #facc15;
             transform: translateX(-50%);
-            box-shadow: 0 0 10px #fbbf24;
             z-index: 1;
         }
 
-        /* الشخصيات المتحركة (بدل الشعلة البسيطة) */
-        .fighters {
+        /* خط النهاية الأحمر (يمين) والأزرق (يسار) */
+        .zone-red { position: absolute; right: 0; top: 0; bottom: 0; width: 12%; background: rgba(239, 68, 68, 0.25); border-left: 2px solid #ef4444; }
+        .zone-blue { position: absolute; left: 0; top: 0; bottom: 0; width: 12%; background: rgba(59, 130, 246, 0.25); border-right: 2px solid #3b82f6; }
+
+        /* مجموعة السيارتين والحبل (تتحرك ككتلة واحدة) */
+        .tug-rig {
             position: absolute;
-            top: 50%;
             left: 50%;
+            top: 50%;
             transform: translate(-50%, -50%);
-            font-size: 42px;
-            z-index: 3;
-            transition: left 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            filter: drop-shadow(0 0 10px rgba(255,255,255,0.7));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+            transition: left 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+            white-space: nowrap;
         }
 
-        .action-feed {
-            font-size: 16px;
-            color: #e2e8f0;
-            background: rgba(255,255,255,0.05);
-            padding: 10px;
-            border-radius: 12px;
-            min-height: 40px;
-            margin-bottom: 15px;
-            border: 1px solid rgba(255,255,255,0.1);
+        .car {
+            font-size: 46px;
+            animation: engineVibrate 0.15s infinite;
+            filter: drop-shadow(0 5px 8px rgba(0,0,0,0.8));
+            user-select: none;
         }
 
-        .gift-alert {
-            background: linear-gradient(90deg, rgba(234,179,8,0.2), rgba(250,204,21,0.4));
-            border: 2px dashed #facc15;
-            color: #fef08a;
+        /* عكس اتجاه السيارة اليسرى لتنظر لليسار واليمنى لليمين */
+        .car-left {
+            transform: scaleX(1); /* تتجه لليسار 🚙 */
+        }
+        .car-right {
+            transform: scaleX(-1); /* معكوسة لتتجه لليمين 🚗 */
+        }
+
+        /* السلسلة المشدودة بين السيارتين */
+        .steel-chain {
+            width: 65px;
+            height: 6px;
+            background: repeating-linear-gradient(90deg, #9ca3af 0px, #facc15 6px, #4b5563 12px);
+            border-radius: 3px;
+            margin: 0 -4px;
+            box-shadow: 0 0 10px #facc15;
+            position: relative;
+        }
+
+        .smoke {
+            font-size: 20px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .live-ticker {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             padding: 10px;
             border-radius: 12px;
             font-size: 15px;
+            min-height: 42px;
+            margin-bottom: 14px;
+            color: #f3f4f6;
+        }
+
+        .gift-banner {
+            background: linear-gradient(90deg, rgba(245, 158, 11, 0.2), rgba(239, 68, 68, 0.2));
+            border: 1px dashed #fbbf24;
+            color: #fde047;
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 14px;
             font-weight: bold;
-            animation: pulse 1.5s infinite;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-            100% { transform: scale(1); }
-        }
-
-        /* شاشة الفوز الحماسية */
-        .winner-modal {
+        /* شاشة الفوز */
+        .victory-screen {
             display: none;
             position: absolute;
             inset: 0;
-            background: rgba(15, 23, 42, 0.96);
+            background: rgba(3, 7, 18, 0.96);
             border-radius: 22px;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 10;
+            z-index: 20;
         }
-        .winner-modal h2 { font-size: 36px; margin-bottom: 10px; color: #facc15; text-shadow: 0 0 20px #facc15; }
-        
-        .restart-btn {
-            background: #22c55e;
-            color: #fff;
+        .victory-screen h2 { font-size: 32px; color: #facc15; margin-bottom: 10px; }
+        .btn-restart {
+            background: #10b981;
+            color: #000;
             border: none;
-            padding: 12px 30px;
-            font-size: 18px;
-            font-weight: bold;
+            padding: 12px 28px;
+            font-size: 16px;
+            font-weight: 900;
             border-radius: 12px;
             cursor: pointer;
-            box-shadow: 0 0 15px rgba(34,197,94,0.6);
             margin-top: 15px;
         }
 
-        /* أزرار التجربة الحية */
-        .testing-panel {
+        /* أزرار الاختبار */
+        .controls {
             margin-top: 20px;
             display: flex;
-            gap: 10px;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
-        .btn-test {
-            padding: 10px 16px;
+        .ctrl-btn {
+            padding: 10px 14px;
             border: none;
             border-radius: 10px;
             font-weight: bold;
             cursor: pointer;
             color: white;
-            font-size: 14px;
+            font-size: 13px;
         }
     </style>
 </head>
-<body id="mainBody">
+<body>
 
-    <div class="game-container" id="gameCard">
-        <div class="battle-title">🔥 معركة الشد الحزامي المباشر 🔥</div>
+    <div class="arena-card" id="arenaCard">
+        <div class="title-banner">🏎️ شد الحبل بالسيارات - LIVE 🔥</div>
 
-        <div class="teams-info">
-            <div class="team-red-box">
+        <div class="scoreboard">
+            <div class="team-box red-team">
                 🔴 الفريق الأحمر<br>
-                <span style="font-size: 14px; background: rgba(255,51,102,0.2); padding: 3px 10px; border-radius: 8px; border: 1px solid #ff3366;">اكتب: 1</span>
+                <span style="font-size:13px;">اكتب: 1</span>
             </div>
-            <div style="font-size: 28px; font-weight: 900; color: #facc15;">VS</div>
-            <div class="team-blue-box">
+            <div style="font-weight:900; color:#facc15; font-size:22px;">⚡ VS ⚡</div>
+            <div class="team-box blue-team">
                 🔵 الفريق الأزرق<br>
-                <span style="font-size: 14px; background: rgba(51,204,255,0.2); padding: 3px 10px; border-radius: 8px; border: 1px solid #33ccff;">اكتب: 2</span>
+                <span style="font-size:13px;">اكتب: 2</span>
             </div>
         </div>
 
-        <div class="rope-arena">
-            <div class="center-marker"></div>
-            <!-- تم استبدال الشعلة البسيطة بتعبير حماسي مشتعل -->
-            <div class="fighters" id="fighterChar">🐂⚡🐂</div>
+        <!-- المضمار -->
+        <div class="asphalt-road">
+            <div class="road-stripes"></div>
+            <div class="zone-red"></div>
+            <div class="zone-blue"></div>
+            <div class="finish-center"></div>
+
+            <!-- السيارتان المربوطتان عكس بعضهما -->
+            <div class="tug-rig" id="tugRig" style="left: 50%;">
+                <span class="smoke" id="smokeRight">💨</span>
+                <!-- سيارة حمراء تسحب لليمين (معكوسة) -->
+                <div class="car car-right">🏎️</div>
+                <!-- السلسلة الفولاذية -->
+                <div class="steel-chain"></div>
+                <!-- سيارة زرقاء تسحب لليسار -->
+                <div class="car car-left">🚙</div>
+                <span class="smoke" id="smokeLeft">💨</span>
+            </div>
         </div>
 
-        <div class="action-feed" id="actionFeed">🚀 المعركة اشتعلت! اكتب 1 أو 2 في التعليقات للبدء...</div>
+        <div class="live-ticker" id="ticker">🔥 المحركات جاهزة! اكتب 1 للأحمر أو 2 للأزرق!</div>
 
-        <div class="gift-alert">
-            🌹 هدية (وردة) = ضربة قاضية (+15 خطوة) لفريقك فوراً! 🔥
+        <div class="gift-banner">
+            🌹 الوردة = تيربو +15 قوة سحب فورية لفريقك! 🚀
         </div>
 
-        <!-- شاشة الفوز الحماسية -->
-        <div class="winner-modal" id="winnerModal">
-            <h2 id="winnerText">🏆 انتصر الفريق الأحمر!</h2>
-            <p style="color: #cbd5e1; font-size: 16px;">تم سحق الخصم بنجاح! تبدأ الجولة التالية فوراً...</p>
-            <button class="restart-btn" onclick="resetGame()">إعادة المعركة الآن ⚡</button>
+        <div class="victory-screen" id="victoryScreen">
+            <h2 id="winnerHeading">🏆 سحق الفريق الأحمر خصمه!</h2>
+            <p style="color:#9ca3af;">الجولة الجديدة تبدأ خلال 5 ثوانٍ...</p>
+            <button class="btn-restart" onclick="resetMatch()">جولة جديدة فوراً</button>
         </div>
     </div>
 
-    <!-- أزرار التجربة للتأكد من الحماسة -->
-    <div class="testing-panel">
-        <button class="btn-test" style="background:#ff3366;" onclick="triggerPull('1', 3, 'فؤاد (تجربة)')">سحب أحمر (+1)</button>
-        <button class="btn-test" style="background:#33ccff;" onclick="triggerPull('2', 3, 'مشاهد (تجربة)')">سحب أزرق (+2)</button>
-        <button class="btn-test" style="background:#eab308; color:#000;" onclick="triggerPull('1', 15, 'الدعم السريع 🌹')">هدية خارقة 🔥</button>
+    <!-- أزرار للتجربة اليدوية -->
+    <div class="controls">
+        <button class="ctrl-btn" style="background:#ef4444;" onclick="pullCar('1', 3, 'أحمد')">سحب أحمر (1) 🏎️</button>
+        <button class="ctrl-btn" style="background:#3b82f6;" onclick="pullCar('2', 3, 'سارة')">سحب أزرق (2) 🚙</button>
+        <button class="ctrl-btn" style="background:#f59e0b; color:#000;" onclick="pullCar('1', 15, 'ملك_الدعم')">تيربو أحمر 🌹</button>
+        <button class="ctrl-btn" style="background:#06b6d4; color:#000;" onclick="pullCar('2', 15, 'الأسطورة')">تيربو أزرق 🌹</button>
     </div>
 
     <script>
-        let pos = 50; // من 0 إلى 100
-        let active = true;
+        let rigPosition = 50; // 50% المنتصف | > 85% فوز الأحمر (يمين) | < 15% فوز الأزرق (يسار)
+        let isRunning = true;
 
-        const fighterChar = document.getElementById('fighterChar');
-        const actionFeed = document.getElementById('actionFeed');
-        const winnerModal = document.getElementById('winnerModal');
-        const winnerText = document.getElementById('winnerText');
-        const gameCard = document.getElementById('gameCard');
+        const tugRig = document.getElementById('tugRig');
+        const ticker = document.getElementById('ticker');
+        const arenaCard = document.getElementById('arenaCard');
+        const victoryScreen = document.getElementById('victoryScreen');
+        const winnerHeading = document.getElementById('winnerHeading');
+        const smokeRight = document.getElementById('smokeRight');
+        const smokeLeft = document.getElementById('smokeLeft');
 
-        function triggerPull(team, power, user) {
-            if (!active) return;
+        // مولد صوت محرك/تيربو بسيط بدون الحاجة لملفات صوت خارجية
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playEngineRev(isTurbo) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = isTurbo ? 'sawtooth' : 'triangle';
+            osc.frequency.setValueAtTime(isTurbo ? 180 : 110, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(isTurbo ? 420 : 160, audioCtx.currentTime + 0.15);
+            gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.15);
+        }
 
-            // إحداث اهتزاز حماسي للشاشة عند السحب القوي أو الهدايا
-            if (power > 5) {
-                gameCard.classList.add('shake-effect');
-                setTimeout(() => gameCard.classList.remove('shake-effect'), 300);
+        function pullCar(team, power, username) {
+            if (!isRunning) return;
+
+            playEngineRev(power >= 10);
+
+            if (power >= 10) {
+                arenaCard.classList.add('shake');
+                setTimeout(() => arenaCard.classList.remove('shake'), 350);
             }
 
+            // في واجهة RTL، زيادة left تحرك العنصر لليسار، ونقصانها تحركه لليمين
             if (team === '1') {
-                pos -= power;
-                actionFeed.innerHTML = `🔥 <span style="color:#ff3366">${user}</span> سحب بقوة نحو الأحمر! (-${power})`;
-            } else {
-                pos += power;
-                actionFeed.innerHTML = `⚡ <span style="color:#33ccff">${user}</span> سحب بقوة نحو الأزرق! (+${power})`;
+                // الفريق الأحمر في اليمين يسحب نحو اليمين (تقليل left)
+                rigPosition -= power;
+                smokeRight.style.opacity = '1';
+                setTimeout(() => smokeRight.style.opacity = '0', 300);
+                ticker.innerHTML = `🏎️ <b style="color:#ef4444">${username}</b> يشد نحو الأحمر بقوة (+${power})!`;
+            } else if (team === '2') {
+                // الفريق الأزرق في اليسار يسحب نحو اليسار (زيادة left)
+                rigPosition += power;
+                smokeLeft.style.opacity = '1';
+                setTimeout(() => smokeLeft.style.opacity = '0', 300);
+                ticker.innerHTML = `🚙 <b style="color:#3b82f6">${username}</b> يشد نحو الأزرق بقوة (+${power})!`;
             }
 
-            // الحدود
-            if (pos < 5) {
-                pos = 5;
-                finishBattle("🔴 انتصر الفريق الأحمر بجدارة!");
-            } else if (pos > 95) {
-                pos = 95;
-                finishBattle("🔵 انتصر الفريق الأزرق بجدارة!");
+            // التحقق من الفوز
+            if (rigPosition <= 16) {
+                rigPosition = 16;
+                declareWinner("🔴 انتصر الفريق الأحمر وسحب الخصم!");
+            } else if (rigPosition >= 84) {
+                rigPosition = 84;
+                declareWinner("🔵 انتصر الفريق الأزرق وسحب الخصم!");
             }
 
-            fighterChar.style.left = pos + '%';
+            tugRig.style.left = rigPosition + '%';
         }
 
-        function finishBattle(title) {
-            active = false;
-            winnerText.innerText = title;
-            winnerModal.style.display = 'flex';
-            setTimeout(resetGame, 5000); // إعادة تلقائية بعد 5 ثوانٍ لاستمرار البث
+        function declareWinner(msg) {
+            isRunning = false;
+            winnerHeading.innerText = msg;
+            victoryScreen.style.display = 'flex';
+            setTimeout(resetMatch, 5000);
         }
 
-        function resetGame() {
-            pos = 50;
-            active = true;
-            fighterChar.style.left = '50%';
-            winnerModal.style.display = 'none';
-            actionFeed.innerText = "⚡ جولة جديدة بدأت! احموا فريقكم بالتعليقات والهدايا!";
+        function resetMatch() {
+            rigPosition = 50;
+            isRunning = true;
+            tugRig.style.left = '50%';
+            victoryScreen.style.display = 'none';
+            ticker.innerText = "🔥 جولة جديدة! اضغطوا في التعليقات 1 أو 2!";
         }
 
-        // استقبال الـ WebSocket الحقيقي عند ربطه بالبث
-        function initWS() {
+        // الاتصال التلقائي بسيرفر البث
+        function connectLive() {
             try {
                 const ws = new WebSocket('ws://localhost:8765');
-                ws.onmessage = (e) => {
-                    const d = JSON.parse(e.data);
-                    triggerPull(d.team, d.power, d.user);
+                ws.onmessage = (event) => {
+                    const data = JSON.parse(event.data);
+                    pullCar(data.team, data.power, data.user);
                 };
-                ws.onclose = () => setTimeout(initWS, 3000);
-            } catch(err) {
-                console.log("وضع التفاعل المحلي نشط");
-            }
+                ws.onclose = () => setTimeout(connectLive, 3000);
+            } catch (e) {}
         }
-        initWS();
+        connectLive();
     </script>
 </body>
 </html>
