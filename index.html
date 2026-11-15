@@ -18,7 +18,7 @@
             overflow: hidden;
         }
 
-        /* اهتزاز عنيف عند الهدايا */
+        /* اهتزاز عنيف عند التيربو */
         @keyframes heavyShake {
             0%, 100% { transform: translate(0, 0) rotate(0deg); }
             20% { transform: translate(-8px, 6px) rotate(-1.5deg); }
@@ -28,7 +28,6 @@
         }
         .shake { animation: heavyShake 0.35s ease-in-out; }
 
-        /* اهتزاز المحركات المستمر */
         @keyframes engineVibrate {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-2px); }
@@ -98,7 +97,6 @@
             align-items: center;
         }
 
-        /* خطوط الطريق البيضاء */
         .road-stripes {
             position: absolute;
             width: 100%;
@@ -109,7 +107,6 @@
             opacity: 0.4;
         }
 
-        /* خط المنتصف الفاصل */
         .finish-center {
             position: absolute;
             left: 50%;
@@ -122,11 +119,9 @@
             z-index: 1;
         }
 
-        /* خط النهاية الأحمر (يمين) والأزرق (يسار) */
         .zone-red { position: absolute; right: 0; top: 0; bottom: 0; width: 12%; background: rgba(239, 68, 68, 0.25); border-left: 2px solid #ef4444; }
         .zone-blue { position: absolute; left: 0; top: 0; bottom: 0; width: 12%; background: rgba(59, 130, 246, 0.25); border-right: 2px solid #3b82f6; }
 
-        /* مجموعة السيارتين والحبل (تتحرك ككتلة واحدة) */
         .tug-rig {
             position: absolute;
             left: 50%;
@@ -147,15 +142,9 @@
             user-select: none;
         }
 
-        /* عكس اتجاه السيارة اليسرى لتنظر لليسار واليمنى لليمين */
-        .car-left {
-            transform: scaleX(1); /* تتجه لليسار 🚙 */
-        }
-        .car-right {
-            transform: scaleX(-1); /* معكوسة لتتجه لليمين 🚗 */
-        }
+        .car-left { transform: scaleX(1); }
+        .car-right { transform: scaleX(-1); }
 
-        /* السلسلة المشدودة بين السيارتين */
         .steel-chain {
             width: 65px;
             height: 6px;
@@ -163,7 +152,6 @@
             border-radius: 3px;
             margin: 0 -4px;
             box-shadow: 0 0 10px #facc15;
-            position: relative;
         }
 
         .smoke {
@@ -193,7 +181,6 @@
             font-weight: bold;
         }
 
-        /* شاشة الفوز */
         .victory-screen {
             display: none;
             position: absolute;
@@ -218,7 +205,6 @@
             margin-top: 15px;
         }
 
-        /* أزرار الاختبار */
         .controls {
             margin-top: 20px;
             display: flex;
@@ -244,59 +230,54 @@
 
         <div class="scoreboard">
             <div class="team-box red-team">
-                🔴 الفريق الأحمر<br>
+                🔴 السيارة الحمراء<br>
                 <span style="font-size:13px;">اكتب: 1</span>
             </div>
             <div style="font-weight:900; color:#facc15; font-size:22px;">⚡ VS ⚡</div>
             <div class="team-box blue-team">
-                🔵 الفريق الأزرق<br>
+                🔵 السيارة الزرقاء<br>
                 <span style="font-size:13px;">اكتب: 2</span>
             </div>
         </div>
 
-        <!-- المضمار -->
         <div class="asphalt-road">
             <div class="road-stripes"></div>
             <div class="zone-red"></div>
             <div class="zone-blue"></div>
             <div class="finish-center"></div>
 
-            <!-- السيارتان المربوطتان عكس بعضهما -->
             <div class="tug-rig" id="tugRig" style="left: 50%;">
                 <span class="smoke" id="smokeRight">💨</span>
-                <!-- سيارة حمراء تسحب لليمين (معكوسة) -->
                 <div class="car car-right">🏎️</div>
-                <!-- السلسلة الفولاذية -->
                 <div class="steel-chain"></div>
-                <!-- سيارة زرقاء تسحب لليسار -->
                 <div class="car car-left">🚙</div>
                 <span class="smoke" id="smokeLeft">💨</span>
             </div>
         </div>
 
-        <div class="live-ticker" id="ticker">🔥 المحركات جاهزة! اكتب 1 للأحمر أو 2 للأزرق!</div>
+        <div class="live-ticker" id="ticker">🔥 المحركات جاهزة! اكتب 1 للسيارة الحمراء أو 2 للزرقاء!</div>
 
         <div class="gift-banner">
-            🌹 الوردة = تيربو +15 قوة سحب فورية لفريقك! 🚀
+            🌹 الوردة = تيربو +15 قوة سحب فورية للسيارة! 🚀
         </div>
 
         <div class="victory-screen" id="victoryScreen">
-            <h2 id="winnerHeading">🏆 سحق الفريق الأحمر خصمه!</h2>
+            <h2 id="winnerHeading">🏆 اكتسحت السيارة الحمراء وسحبت الخصم!</h2>
             <p style="color:#9ca3af;">الجولة الجديدة تبدأ خلال 5 ثوانٍ...</p>
             <button class="btn-restart" onclick="resetMatch()">جولة جديدة فوراً</button>
         </div>
     </div>
 
-    <!-- أزرار للتجربة اليدوية -->
+    <!-- أزرار الاختبار الخاصة بالسيارات -->
     <div class="controls">
-        <button class="ctrl-btn" style="background:#ef4444;" onclick="pullCar('1', 3, 'أحمد')">سحب أحمر (1) 🏎️</button>
-        <button class="ctrl-btn" style="background:#3b82f6;" onclick="pullCar('2', 3, 'سارة')">سحب أزرق (2) 🚙</button>
-        <button class="ctrl-btn" style="background:#f59e0b; color:#000;" onclick="pullCar('1', 15, 'ملك_الدعم')">تيربو أحمر 🌹</button>
-        <button class="ctrl-btn" style="background:#06b6d4; color:#000;" onclick="pullCar('2', 15, 'الأسطورة')">تيربو أزرق 🌹</button>
+        <button class="ctrl-btn" style="background:#ef4444;" onclick="pullCar('1', 3, 'مشاهد حمراء')">سحب حمراء (1) 🏎️</button>
+        <button class="ctrl-btn" style="background:#3b82f6;" onclick="pullCar('2', 3, 'مشاهد زرقاء')">سحب زرقاء (2) 🚙</button>
+        <button class="ctrl-btn" style="background:#f59e0b; color:#000;" onclick="pullCar('1', 15, 'هدية تيربو')">تيربو حمراء 🌹</button>
+        <button class="ctrl-btn" style="background:#06b6d4; color:#000;" onclick="pullCar('2', 15, 'هدية تيربو')">تيربو زرقاء 🌹</button>
     </div>
 
     <script>
-        let rigPosition = 50; // 50% المنتصف | > 85% فوز الأحمر (يمين) | < 15% فوز الأزرق (يسار)
+        let rigPosition = 50; 
         let isRunning = true;
 
         const tugRig = document.getElementById('tugRig');
@@ -307,7 +288,6 @@
         const smokeRight = document.getElementById('smokeRight');
         const smokeLeft = document.getElementById('smokeLeft');
 
-        // مولد صوت محرك/تيربو بسيط بدون الحاجة لملفات صوت خارجية
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         function playEngineRev(isTurbo) {
             if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -334,28 +314,24 @@
                 setTimeout(() => arenaCard.classList.remove('shake'), 350);
             }
 
-            // في واجهة RTL، زيادة left تحرك العنصر لليسار، ونقصانها تحركه لليمين
             if (team === '1') {
-                // الفريق الأحمر في اليمين يسحب نحو اليمين (تقليل left)
                 rigPosition -= power;
                 smokeRight.style.opacity = '1';
                 setTimeout(() => smokeRight.style.opacity = '0', 300);
-                ticker.innerHTML = `🏎️ <b style="color:#ef4444">${username}</b> يشد نحو الأحمر بقوة (+${power})!`;
+                ticker.innerHTML = `🏎️ <b style="color:#ef4444">السيارة الحمراء</b> تتقدم بقوة (+${power}) بفضل التعليقات!`;
             } else if (team === '2') {
-                // الفريق الأزرق في اليسار يسحب نحو اليسار (زيادة left)
                 rigPosition += power;
                 smokeLeft.style.opacity = '1';
                 setTimeout(() => smokeLeft.style.opacity = '0', 300);
-                ticker.innerHTML = `🚙 <b style="color:#3b82f6">${username}</b> يشد نحو الأزرق بقوة (+${power})!`;
+                ticker.innerHTML = `🚙 <b style="color:#3b82f6">السيارة الزرقاء</b> تتقدم بقوة (+${power}) بفضل التعليقات!`;
             }
 
-            // التحقق من الفوز
             if (rigPosition <= 16) {
                 rigPosition = 16;
-                declareWinner("🔴 انتصر الفريق الأحمر وسحب الخصم!");
+                declareWinner("🔴 انتصرت السيارة الحمراء وسحبت السيارة الزرقاء!");
             } else if (rigPosition >= 84) {
                 rigPosition = 84;
-                declareWinner("🔵 انتصر الفريق الأزرق وسحب الخصم!");
+                declareWinner("🔵 انتصرت السيارة الزرقاء وسحبت السيارة الحمراء!");
             }
 
             tugRig.style.left = rigPosition + '%';
@@ -373,10 +349,9 @@
             isRunning = true;
             tugRig.style.left = '50%';
             victoryScreen.style.display = 'none';
-            ticker.innerText = "🔥 جولة جديدة! اضغطوا في التعليقات 1 أو 2!";
+            ticker.innerText = "🔥 جولة جديدة بدأت! اكتبوا 1 أو 2 لتحريك السيارات!";
         }
 
-        // الاتصال التلقائي بسيرفر البث
         function connectLive() {
             try {
                 const ws = new WebSocket('ws://localhost:8765');
